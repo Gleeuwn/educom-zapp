@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomepageController!{% endblock %}
+{% block javascripts %}
+ {{parent ()}}
+    <script>
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+            eventClick: function (info) {
+            window.location.href = '/detailpagina/' + info.event.id; // Vervang '/detailpagina/' door de juiste URL
+        },
+                events: [
+                    {% for record in bezoek %}
+                    {% set klantData = record.klant %}
+                    {% set medewerkerData = record.medewerker %}
+                        {
+                            title: '{{ record.tijd|date('H:i') }}   {{ klantData.voornaam }} {{ klantData.achternaam }}',
+                            medewerker: '{{medewerkerData.voornaam}} {{medewerkerData.achternaam}}',
+                            status: '{{record.status}}',
+                            start: '{{ record.datum|date('Y-m-d') }}',
+                            id: '{{record.id}}',
+                        },
+                    {% endfor %}
+                ]
+            });
+            calendar.render();
+
+
+        });
+    </script>
+{% endblock %}
+{% block body %}
+<div id='calendar'></div>
+
+{% endblock %}

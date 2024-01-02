@@ -1,0 +1,44 @@
+:root {
+
+    /* FONTS */
+    --heading: "helvetica-neue";
+    --regular: "Arial";
+
+    /* COLORS */
+    /* Main Colors */
+    --gradient: linear-gradient( rgba(0,95,171,1) 2%, rgba(12,35,114,1) 98% );
+    --blue: #0158a4;
+}
+
+.startpagina{
+    background: var(--gradient);
+    background-size: auto;
+    color:#fff;
+    text-align: center;
+    padding: 10px;
+    top: 50%;
+    left: 50%;
+}
+
+.buttonlogin{
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #fff;
+    color: #fff;
+    text-decoration:none;
+    font-size: 16px;
+}
+.formrond{
+    border-radius:25px;
+    width: 200px;
+}
+
+.menubalk{
+    background: var(--gradient);
+    color: #fff;
+    font-size: 24px;
+    text-decoration:none;
+    padding: 25px;
+    height: 50px;
+    font-family: "helvetica-neue";
+}

@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomepageController!{% endblock %}
+{% block javascripts %}
+
+{% endblock %}
+{% block body %}
+detailpagina
+
+ {% if bezoek %}
+
+    {% set klantData = bezoek.klant %}
+    {% set medewerkerData = bezoek.medewerker %}
+    <p>Klant ID: {{ bezoek.klant.id }}</p>
+    {{klantData.voornaam}} {{klantData.achternaam}} <br> 
+    {{klantData.straat}} {{klantData.huisnummer}} <br>
+    {{klantData.postcode}} {{klantData.woonplaats}} <br>
+    {{klantData.telefoonnummer}}
+    
+    <p>Medewerker ID: {{ bezoek.medewerker.id }}</p>
+    {{medewerkerData.voornaam}} {{medewerkerData.achternaam}} <br>
+    {{medewerkerData.functie}} 
+
+    <p>
+    Status: {{ bezoek.status }}<br>
+    Datum: {{bezoek.datum|date('Y-m-d')}}<br>
+    Geplande aankomsttijd: {{bezoek.tijd|date('H:i')}}<br>
+    Aankomsttijd:
+    {% if bezoek.aankomsttijd %}
+        {{bezoek.aankomsttijd|date('H:i')}}
+        {% else %}
+        Niet ingevuld.
+    {% endif %}
+    <br> Vertrektijd:
+    {% if bezoek.vertrektijd is not null %}
+        {{bezoek.vertrektijd|date('H:i')}}
+        {% else %}
+        Niet ingevuld.
+    {% endif %}
+    </p>
+    <p>
+    {% if bezoek.handelings is not empty %}
+        <ul>
+            {% set totaleTijd = 0 %}
+            {% for handeling in bezoek.handelings %}
+                <li>
+                    Handeling ID: {{ handeling.id }}<br>
+                    Status: {{ handeling.status }}<br>
+                    Taak: {{ handeling.taak.naam }}<br>
+                    Omschrijving: {{ handeling.taak.omschrijving}}<br>
+                    Tijdsduur: {{handeling.taak.tijd}} minuten
+                    
+                </li>
+            {% set totaleTijd = totaleTijd + handeling.taak.tijd %}
+            {% endfor %}
+        </ul>
+        <p>Totale tijd van alle handelingen: {{ totaleTijd }} minuten</p>
+    {% else %}
+        <p>Geen handelingen gevonden voor dit bezoek.</p>
+    {% endif %}
+    </p>
+
+{% endif %}
+
+{% endblock %}
