@@ -5,25 +5,26 @@
 
 {% endblock %}
 {% block body %}
+<section class="content">
 detailpagina
 
  {% if bezoek %}
-
+<div class="row">
+<div class="col-md-4 border">
+Datum: {{bezoek.datum|date('Y-m-d')}}<br>
+Hier komt de datum widget
+</div>
+<div class="col-md-4 border">
     {% set klantData = bezoek.klant %}
     {% set medewerkerData = bezoek.medewerker %}
-    <p>Klant ID: {{ bezoek.klant.id }}</p>
     {{klantData.voornaam}} {{klantData.achternaam}} <br> 
     {{klantData.straat}} {{klantData.huisnummer}} <br>
     {{klantData.postcode}} {{klantData.woonplaats}} <br>
     {{klantData.telefoonnummer}}
-    
-    <p>Medewerker ID: {{ bezoek.medewerker.id }}</p>
+ </div>   
+<div class="col-md-4 border">
     {{medewerkerData.voornaam}} {{medewerkerData.achternaam}} <br>
-    {{medewerkerData.functie}} 
-
-    <p>
-    Status: {{ bezoek.status }}<br>
-    Datum: {{bezoek.datum|date('Y-m-d')}}<br>
+    {{medewerkerData.functie}}<br>
     Geplande aankomsttijd: {{bezoek.tijd|date('H:i')}}<br>
     Aankomsttijd:
     {% if bezoek.aankomsttijd %}
@@ -37,22 +38,26 @@ detailpagina
         {% else %}
         Niet ingevuld.
     {% endif %}
-    </p>
+    Status: {{ bezoek.status }}<br>
+</div>
+</div>
     <p>
     {% if bezoek.handelings is not empty %}
         <ul>
             {% set totaleTijd = 0 %}
+            <table class="border">
+            <tr><th>Taak</th><th>Omschrijving</th><th>Tijd</th><th>Status</th></tr>
             {% for handeling in bezoek.handelings %}
-                <li>
-                    Handeling ID: {{ handeling.id }}<br>
-                    Status: {{ handeling.status }}<br>
-                    Taak: {{ handeling.taak.naam }}<br>
-                    Omschrijving: {{ handeling.taak.omschrijving}}<br>
-                    Tijdsduur: {{handeling.taak.tijd}} minuten
-                    
-                </li>
+                <tr>
+                
+                <td>{{ handeling.taak.naam }}</td>
+                <td>{{ handeling.taak.omschrijving }}</td>
+                <td>{{ handeling.taak.tijd }} minuten</td>
+                <td>{{ handeling.status }}</td>   
+                </tr>
             {% set totaleTijd = totaleTijd + handeling.taak.tijd %}
             {% endfor %}
+            </table>
         </ul>
         <p>Totale tijd van alle handelingen: {{ totaleTijd }} minuten</p>
     {% else %}
@@ -61,5 +66,5 @@ detailpagina
     </p>
 
 {% endif %}
-
+</section>
 {% endblock %}

@@ -39,6 +39,16 @@
     font-size: 24px;
     text-decoration:none;
     padding: 25px;
-    height: 50px;
+    height: 75px;
     font-family: "helvetica-neue";
+}
+
+.content{
+    padding: 5%;
+}
+
+.border{
+    border: 2px;
+    width: 90%;
+    height: 100%;
 }

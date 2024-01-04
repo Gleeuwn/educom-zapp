@@ -61,10 +61,6 @@ class BezoekService {
         return($this->bezoekRepository->getAllBezoek());
     }
 
-
-
-
-
     public function saveBezoek($params) {
         $data = [
           "id" => (isset($params["id"]) && $params["id"] != "") ? $params["id"] : null,
