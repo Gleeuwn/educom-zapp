@@ -32,25 +32,22 @@ class HomepageController extends AbstractController
         // Haal de bezoekinformatie op basis van $id op uit de database
         // ...
         $bezoeks = $this->bs->fetchBezoek($id);
+        $medewerkers = $this->bs->getAllMedewerker();
         return $this->render('detailpagina/detailpagina.html.twig', [
             'bezoek' => $bezoeks,
+            'medewerkers' => $medewerkers,
         ]);
         dd($bezoeks);
     }
 
     #[Route('/save', name: 'bezoek_save')] 
-    public function saveBezoek() {
+    public function saveBezoek(Request $request): Response {
 
-        $bezoek = [
-            "medewerker_id" => 1,
-            "klant_id" => 1, 
-            "datum" => "2022-07-14",
-            "tijd" => "14:00:00",
-            "status" => "onvoltooid"
-        ];
+    $bezoek = $request->request->get('selectMedewerker');
 
         $result = $this->bs->saveBezoek($bezoek);
         dd($result);
+        return $this->redirectToRoute('/detailpagina/{id}', ['id' => $bezoekId]);
 
     }
     #[Route('/savehandeling', name: 'handeling_save')] 

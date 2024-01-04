@@ -4,3 +4,7 @@ controllers:
 detailpagina:
     path: /detailpagina/{id}
     controller: App\Controller\HomepageController::show
+medewerker_wijziging:
+    path: '/medewerker/wijziging'
+    controller: 'App\Controller\HomepageController::saveBezoek'
+    methods: ['POST']

@@ -23,6 +23,9 @@ class MedewerkerRepository extends ServiceEntityRepository
     public function fetchMedewerker($id) {
     return($this->find($id));  
     }
+    public function getAllMedewerker() {
+        return($this->findAll());        
+    }
 
 //    /**
 //     * @return Medewerker[] Returns an array of Medewerker objects

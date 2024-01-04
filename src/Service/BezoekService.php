@@ -60,6 +60,9 @@ class BezoekService {
     public function getAllBezoek() {
         return($this->bezoekRepository->getAllBezoek());
     }
+    public function getAllMedewerker() {
+        return($this->medewerkerRepository->getAllMedewerker());
+    }
 
     public function saveBezoek($params) {
         $data = [

@@ -2,45 +2,108 @@
 
 {% block title %}Hello HomepageController!{% endblock %}
 {% block javascripts %}
+<script>
+function openPopup() {
+    let popup = document.getElementById("popup");
+    popup.classList.add("open-popup");
+}
+
+function closePopup() {
+    let popup = document.getElementById("popup");
+    popup.classList.remove("open-popup");
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector(".buttonklant").addEventListener("click", openPopup);
+    document.querySelector("#popup button").addEventListener("click", closePopup);
+});
+
+function saveMedewerker() {
+    let medewerkerSelect = document.getElementById("medewerkerSelect");
+    let selectedMedewerkerId = medewerkerSelect.value;
+    console.log("Geselecteerde medewerker ID:", selectedMedewerkerId);
+        // Maak een AJAX-verzoek aan de server om de geselecteerde medewerkerinformatie door te sturen
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/medewerker/wijziging", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // Verwerken van het antwoord van de server (indien nodig)
+            console.log("Antwoord van de server:", xhr.responseText);
+        }
+    };
+
+    // Bouw de te verzenden gegevens op
+    let data = "medewerkerId=" + encodeURIComponent(selectedMedewerkerId);
+
+    // Verzend het verzoek naar de server
+    xhr.send(data);
+    closePopup();
+}
+
+
+</script>
 
 {% endblock %}
 {% block body %}
 <section class="content">
-detailpagina
 
  {% if bezoek %}
-<div class="row">
-<div class="col-md-4 border">
-Datum: {{bezoek.datum|date('Y-m-d')}}<br>
-Hier komt de datum widget
-</div>
-<div class="col-md-4 border">
-    {% set klantData = bezoek.klant %}
-    {% set medewerkerData = bezoek.medewerker %}
-    {{klantData.voornaam}} {{klantData.achternaam}} <br> 
-    {{klantData.straat}} {{klantData.huisnummer}} <br>
-    {{klantData.postcode}} {{klantData.woonplaats}} <br>
-    {{klantData.telefoonnummer}}
- </div>   
-<div class="col-md-4 border">
-    {{medewerkerData.voornaam}} {{medewerkerData.achternaam}} <br>
-    {{medewerkerData.functie}}<br>
-    Geplande aankomsttijd: {{bezoek.tijd|date('H:i')}}<br>
-    Aankomsttijd:
-    {% if bezoek.aankomsttijd %}
-        {{bezoek.aankomsttijd|date('H:i')}}
+<div class="container overflow-hidden">
+  <div class="row gx-5">
+    <div class="col">
+     <div class="p-3 border">
+        Datum: {{bezoek.datum|date('Y-m-d')}}<br>
+        Geplande aankomsttijd: {{bezoek.tijd|date('H:i')}}<br>
+        Hier komt de datum widget
+     </div>
+    </div>
+    <div class="col">
+      <div class="p-3 border">
+        <h3>Klant</h3>
+        {% set klantData = bezoek.klant %}
+        {% set medewerkerData = bezoek.medewerker %}
+        {{klantData.voornaam}} {{klantData.achternaam}} <br> 
+        {{klantData.straat}} {{klantData.huisnummer}} <br>
+        {{klantData.postcode}} {{klantData.woonplaats}} <br>
+        {{klantData.telefoonnummer}}<br>
+        <button class="buttonklant">Selecteer Klant</button>
+      </div>
+    </div>
+    <div class="col">
+      <div class="p-3 border">
+        <h3>Medewerker</h3>
+        {{medewerkerData.voornaam}} {{medewerkerData.achternaam}} <br>
+        {{medewerkerData.functie}}<br>
+        
+        Aankomsttijd:
+        {% if bezoek.aankomsttijd %}
+            {{bezoek.aankomsttijd|date('H:i')}}
         {% else %}
-        Niet ingevuld.
-    {% endif %}
-    <br> Vertrektijd:
-    {% if bezoek.vertrektijd is not null %}
-        {{bezoek.vertrektijd|date('H:i')}}
+            Niet ingevuld.
+        {% endif %}
+        <br> Vertrektijd:
+        {% if bezoek.vertrektijd is not null %}
+            {{bezoek.vertrektijd|date('H:i')}}
         {% else %}
-        Niet ingevuld.
-    {% endif %}
-    Status: {{ bezoek.status }}<br>
-</div>
-</div>
+            Niet ingevuld.
+        {% endif %}
+        <br>Status: {{ bezoek.status }}<br>
+        <button type="submit" class="buttonklant" onclick="openPopup()">Selecteer Medewerker</button>
+            <div class="popup" id="popup">
+            <form id="medewerkerForm">
+            <label for="medewerkerSelect">Kies een medewerker:</label>
+            <select id="medewerkerSelect" name="medewerker">
+            {% for medewerker in medewerkers %}
+            <option value="{{ medewerker.id }}">{{ medewerker.voornaam }} {{ medewerker.achternaam }}</option>
+            {% endfor %}
+            </select>
+            <button type="button" onclick="saveMedewerker()">Opslaan</button>
+            <button type="button" onclick="closePopup()">Annuleren</button>
+            </div>
+      </div>
+    </div>
+  </div>
     <p>
     {% if bezoek.handelings is not empty %}
         <ul>
@@ -67,4 +130,6 @@ Hier komt de datum widget
 
 {% endif %}
 </section>
+
+</div>
 {% endblock %}
