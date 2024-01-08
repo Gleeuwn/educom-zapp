@@ -63,18 +63,24 @@ class BezoekService {
     public function getAllMedewerker() {
         return($this->medewerkerRepository->getAllMedewerker());
     }
+    public function getAllKlant() {
+        return($this->klantRepository->getAllKlant());
+    }
 
     public function saveBezoek($params) {
+
+
         $data = [
           "id" => (isset($params["id"]) && $params["id"] != "") ? $params["id"] : null,
-          "status" => $params["status"],
-          "datum" => new \DateTime($params["datum"]),
-          "tijd" => new \DateTime($params["tijd"]),             
-          "klant" => $this->fetchKlant($params["klant_id"]),
-          "medewerker" => $this->fetchMedewerker($params["medewerker_id"]),
-          "aankomsttijd" => new \DateTime($params["aankomsttijd"]),
-          "vertrektijd" => new \DateTime($params["vertrektijd"]),
+          "status" => isset($params["status"]) ? $params["status"] : null,
+          "datum" => isset($params["datum"]) ? new \DateTime($params["datum"]) : null,
+          "tijd" => isset($params["tijd"]) ? new \DateTime($params["tijd"]) : null,
+          "klant" => isset($params["klant_id"]) ? $this->fetchKlant($params["klant_id"]) : null,
+          "medewerker" => isset($params["medewerker_id"]) ? $this->fetchMedewerker($params["medewerker_id"]) : null,
+          "aankomsttijd" => isset($params["aankomsttijd"]) && $params["aankomsttijd"] !== "" ? new \DateTime($params["aankomsttijd"]) : null,
+          "vertrektijd" => isset($params["vertrektijd"]) && $params["vertrektijd"] !== "" ? new \DateTime($params["vertrektijd"]) : null,
         ];
+
 
         $result = $this->bezoekRepository->saveBezoek($data);
         return($result);

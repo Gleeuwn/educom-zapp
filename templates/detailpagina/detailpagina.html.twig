@@ -1,125 +1,109 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomepageController!{% endblock %}
-{% block javascripts %}
-<script>
-function openPopup() {
-    let popup = document.getElementById("popup");
-    popup.classList.add("open-popup");
-}
+{% block title %}Bezoek{% endblock %}
 
-function closePopup() {
-    let popup = document.getElementById("popup");
-    popup.classList.remove("open-popup");
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector(".buttonklant").addEventListener("click", openPopup);
-    document.querySelector("#popup button").addEventListener("click", closePopup);
-});
-
-function saveMedewerker() {
-    let medewerkerSelect = document.getElementById("medewerkerSelect");
-    let selectedMedewerkerId = medewerkerSelect.value;
-    console.log("Geselecteerde medewerker ID:", selectedMedewerkerId);
-        // Maak een AJAX-verzoek aan de server om de geselecteerde medewerkerinformatie door te sturen
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", "/medewerker/wijziging", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            // Verwerken van het antwoord van de server (indien nodig)
-            console.log("Antwoord van de server:", xhr.responseText);
-        }
-    };
-
-    // Bouw de te verzenden gegevens op
-    let data = "medewerkerId=" + encodeURIComponent(selectedMedewerkerId);
-
-    // Verzend het verzoek naar de server
-    xhr.send(data);
-    closePopup();
-}
-
-
-</script>
-
-{% endblock %}
 {% block body %}
 <section class="content">
 
  {% if bezoek %}
 <div class="container overflow-hidden">
-  <div class="row gx-5">
-    <div class="col">
-     <div class="p-3 border">
-        Datum: {{bezoek.datum|date('Y-m-d')}}<br>
-        Geplande aankomsttijd: {{bezoek.tijd|date('H:i')}}<br>
-        Hier komt de datum widget
-     </div>
-    </div>
-    <div class="col">
-      <div class="p-3 border">
-        <h3>Klant</h3>
-        {% set klantData = bezoek.klant %}
-        {% set medewerkerData = bezoek.medewerker %}
-        {{klantData.voornaam}} {{klantData.achternaam}} <br> 
-        {{klantData.straat}} {{klantData.huisnummer}} <br>
-        {{klantData.postcode}} {{klantData.woonplaats}} <br>
-        {{klantData.telefoonnummer}}<br>
-        <button class="buttonklant">Selecteer Klant</button>
-      </div>
-    </div>
-    <div class="col">
-      <div class="p-3 border">
-        <h3>Medewerker</h3>
-        {{medewerkerData.voornaam}} {{medewerkerData.achternaam}} <br>
-        {{medewerkerData.functie}}<br>
-        
-        Aankomsttijd:
-        {% if bezoek.aankomsttijd %}
-            {{bezoek.aankomsttijd|date('H:i')}}
-        {% else %}
-            Niet ingevuld.
-        {% endif %}
-        <br> Vertrektijd:
-        {% if bezoek.vertrektijd is not null %}
-            {{bezoek.vertrektijd|date('H:i')}}
-        {% else %}
-            Niet ingevuld.
-        {% endif %}
-        <br>Status: {{ bezoek.status }}<br>
-        <button type="submit" class="buttonklant" onclick="openPopup()">Selecteer Medewerker</button>
-            <div class="popup" id="popup">
-            <form id="medewerkerForm">
-            <label for="medewerkerSelect">Kies een medewerker:</label>
-            <select id="medewerkerSelect" name="medewerker">
-            {% for medewerker in medewerkers %}
-            <option value="{{ medewerker.id }}">{{ medewerker.voornaam }} {{ medewerker.achternaam }}</option>
-            {% endfor %}
-            </select>
-            <button type="button" onclick="saveMedewerker()">Opslaan</button>
-            <button type="button" onclick="closePopup()">Annuleren</button>
+    <div class="row gx-5">
+        <div class="col">
+            <div class="p-3 border">
+            Datum: {{bezoek.datum|date('Y-m-d')}}<br>
+            Geplande aankomsttijd: {{bezoek.tijd|date('H:i')}}<br>
+            Hier komt de datum widget
             </div>
-      </div>
+        </div>
+        <div class="col">
+            <div class="p-3 border">
+            <h3>Klant</h3>
+            {% set klantData = bezoek.klant %}
+            {% set medewerkerData = bezoek.medewerker %}
+            <h4>{{klantData.voornaam}} {{klantData.achternaam}}</h4>
+            {{klantData.straat}} {{klantData.huisnummer}} <br>
+            {{klantData.postcode}} {{klantData.woonplaats}} <br>
+            {{klantData.telefoonnummer}}<br>
+
+            
+            <button type="button" class="button red" id="btn1">Selecteer Klant</button>
+            
+                <div class="popup">
+                <form id="klantForm" method='POST'>
+                    <label for="klantSelect">Kies een klant:</label>
+                    <select id="klantSelect" name="klant_id">
+                    {% for klant in klants %}
+                    <option value="{{ klant.id }}">{{ klant.voornaam }} {{ klant.achternaam }}</option>
+                    {% endfor %}
+                    </select>
+                    <button type="button" id="save">Opslaan</button>
+                </form>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="p-3 border">
+                <h3>Medewerker</h3>
+                <h4>{{medewerkerData.voornaam}} {{medewerkerData.achternaam}}</h4>
+                {{medewerkerData.functie}}<br>
+        
+                Aankomsttijd:
+                {% if bezoek.aankomsttijd %}
+                    {{bezoek.aankomsttijd|date('H:i')}}
+                {% else %}
+                    Niet ingevuld.
+                {% endif %}
+                    <br> Vertrektijd:
+                {% if bezoek.vertrektijd is not null %}
+                    {{bezoek.vertrektijd|date('H:i')}}
+                {% else %}
+                    Niet ingevuld.
+                {% endif %}
+                <br>Status: {{ bezoek.status }}<br>
+               
+                <button type="submit" class="button blue" id="btn">Selecteer Medewerker</button>
+                   
+                    <div class="popup1" id="popup1">
+                    <form id="medewerkerForm"  method='POST'>
+                        <label for="medewerkerSelect">Kies een medewerker:</label>
+                        <select id="medewerkerSelect" name="medewerker_id">
+                        {% for medewerker in medewerkers %}
+                        <option value="{{ medewerker.id }}">{{ medewerker.voornaam }} {{ medewerker.achternaam }}</option>
+                        {% endfor %}
+                        </select>
+                        <input type="hidden" name="id" value="{{ bezoek.id }}">
+                        <button type="button" id="save">Opslaan</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
     <p>
     {% if bezoek.handelings is not empty %}
         <ul>
             {% set totaleTijd = 0 %}
+            {% set count = 1 %}
             <table class="border">
-            <tr><th>Taak</th><th>Omschrijving</th><th>Tijd</th><th>Status</th></tr>
+            <tr><th>#</th><th>Taak</th><th>Omschrijving</th><th>Tijd</th><th>Status</th><th></th></tr>
             {% for handeling in bezoek.handelings %}
+            {% set count = count +1 %}
                 <tr>
-                
+                <td>{{ count }}</td>
                 <td>{{ handeling.taak.naam }}</td>
                 <td>{{ handeling.taak.omschrijving }}</td>
                 <td>{{ handeling.taak.tijd }} minuten</td>
-                <td>{{ handeling.status }}</td>   
+                <td>{{ handeling.status }}</td>
+                <td><button class="button red"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12zM432 80h-82.4l-34-56.7A48 48 0 0 0 274.4 0H173.6a48 48 0 0 0 -41.2 23.3L98.4 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0 -16-16zM171.8 50.9A6 6 0 0 1 177 48h94a6 6 0 0 1 5.2 2.9L293.6 80H154.4zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12z"/></svg></i></button></td>
                 </tr>
+            {% set count = count +1 %}
             {% set totaleTijd = totaleTijd + handeling.taak.tijd %}
             {% endfor %}
+            <tr>
+            <td>{{ count }}</td>
+            
+            </tr>
             </table>
         </ul>
         <p>Totale tijd van alle handelingen: {{ totaleTijd }} minuten</p>
@@ -131,5 +115,11 @@ function saveMedewerker() {
 {% endif %}
 </section>
 
-</div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+
+
 {% endblock %}

@@ -30,17 +30,23 @@
     text-decoration:none;
     font-size: 16px;
 }
-.buttonklant{
+.button{
     width: 90%;
     padding: 1px;
-    color: #FFF;
-    background-color: var(--blue);
     margin: 10px;
     border-radius: 5px;
     text-align: center;
     display: inline-block;
     border: none;
     font-size: 24px;
+}
+.blue{
+    color: #FFF;
+    background-color: var(--blue);
+}
+.red{
+    color: #FFF;
+    background-color: rgb(148, 0, 0);
 }
 .bezoek{
     width: 90%;
@@ -89,21 +95,41 @@ h3{
 }
 
 .popup{
-    width: 400px;
+    width: 600px;
+    height: 200px;
     background: #fff;
     border-radius: 6px;
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.1);
+    transform: translate(-50%, -50%);
     text-align: center;
     padding: 5px;
-    visibility: hidden;
     transition: transform 0.4s, top 0.4s;
     border: 1px solid black;
+    display: none;
+    z-index: 1000;
 }
-.open-popup{
-    visibility: visible;
+.popup1{
+    width: 600px;
+    height: 200px;
+    background: #fff;
+    border-radius: 6px;
+    position: absolute;
     top: 50%;
-    transform: translate(-50%, -50%) scale(1);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 5px;
+    transition: transform 0.4s, top 0.4s;
+    border: 1px solid black;
+    display: none;
+    z-index: 1000;
+}
+
+.button-medewerker{
+    text-align: center;
+}
+.button-klant{
+    text-align: center; 
 }

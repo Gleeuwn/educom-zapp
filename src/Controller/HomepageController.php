@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 use App\Service\BezoekService;
 
@@ -20,34 +21,40 @@ class HomepageController extends AbstractController
     public function index(): Response
     {
         $bezoeks = $this->bs->getAllBezoek();
+        $medewerkers = $this->bs->getAllMedewerker();
+        $klants = $this->bs->getAllklant();
         return $this->render('homepage/index.html.twig', [
             'controller_name' => 'HomepageController',
             'bezoek' => $bezoeks,
+            'medewerkers' => $medewerkers,
+            'klants' => $klants
         ]);
         dd($bezoeks);
     }
 
     public function show($id): Response
     {
-        // Haal de bezoekinformatie op basis van $id op uit de database
-        // ...
         $bezoeks = $this->bs->fetchBezoek($id);
         $medewerkers = $this->bs->getAllMedewerker();
+        $klants = $this->bs->getAllklant();
         return $this->render('detailpagina/detailpagina.html.twig', [
             'bezoek' => $bezoeks,
             'medewerkers' => $medewerkers,
+            'klants' => $klants
         ]);
         dd($bezoeks);
     }
 
-    #[Route('/save', name: 'bezoek_save')] 
-    public function saveBezoek(Request $request): Response {
+    #[Route('/save', name: 'bezoek_save', methods: ['POST'])] 
+    public function saveBezoek(Request $request) {
 
-    $bezoek = $request->request->get('selectMedewerker');
+        $params = $request->request->all();
+        file_put_contents('output.txt', print_r($params, true));
+        $result = $this->bs->saveBezoek($params);
 
-        $result = $this->bs->saveBezoek($bezoek);
-        dd($result);
-        return $this->redirectToRoute('/detailpagina/{id}', ['id' => $bezoekId]);
+        $referer = $request->headers->get('referer');
+
+        return $this->redirect($referer);
 
     }
     #[Route('/savehandeling', name: 'handeling_save')] 

@@ -15,13 +15,50 @@
         
         {% endblock %}
 
-        {% block javascripts %}
+     
             {{ encore_entry_script_tags('app') }}
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" />
         <script type="text/javascript" language="javascript" src="{{asset('bootstrap/js/bootstrap.js')}}"></script>  
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
-        
+<script>
+$(document).ready(function () {
+    $("#btn1").click(function () {
+        $(".popup").fadeToggle();
+        $(".popup1").fadeOut(); 
+    });
 
+    $("#btn").click(function () {
+        $(".popup1").fadeToggle();
+        $(".popup").fadeOut(); 
+    });
+
+    $(document).on("click", "#save", function () {
+        var statusValue = $("#status").prop("checked") ? "voltooid" : "onvoltooid";
+
+        var formData = $("#bezoekForm, #klantForm, #medewerkerForm").serialize() + "&status=" + statusValue;
+        console.log(formData);
+
+        $.ajax({
+            type: "POST",
+            url: "/save",
+            data: formData,
+            success: function (response) {
+                console.log(response);
+                location.reload(true);
+            }
+        });
+    });
+
+    $(document).on("click", ".popup button[type='button']", function () {
+        closePopup();
+    });
+
+    function closePopup() {
+        $(".popup, .popup1").fadeOut();
+    }
+});
+</script>
+      {% block javascripts %}
         {% endblock %}
 
     </head>

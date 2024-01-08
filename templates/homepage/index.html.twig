@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomepageController!{% endblock %}
+{% block title %}Homepage{% endblock %}
 {% block javascripts %}
  {{parent ()}}
+ 
     <script>
     
         document.addEventListener('DOMContentLoaded', function () {
@@ -32,9 +33,44 @@
         });
     </script>
 
+
     
 {% endblock %}
 {% block body %}
-<div id='calendar'></div>
-<button class="bezoek">Nieuw Bezoek</button>
+
+<button type="submit" class="button blue" id="btn1">Nieuw Bezoek</button>
+
+            <div class="popup">
+            <form id="bezoekForm">
+            <label>
+            Datum <input type="date" name="datum">
+            </label><br>
+            <label>
+            Tijd <input type="time" name="tijd">
+            </label><br>
+            <label for="klantSelect">Klant:</label>
+            <select id="klantSelect" name="klant_id">
+            {% for klant in klants %}
+            <option value="{{ klant.id }}">{{ klant.voornaam }} {{ klant.achternaam }}</option>
+            {% endfor %}
+            </select><br>
+            <label for="medewerkerSelect">Medewerker:</label>
+            <select id="medewerkerSelect" name="medewerker_id">
+            {% for medewerker in medewerkers %}
+            <option value="{{ medewerker.id }}">{{ medewerker.voornaam }} {{ medewerker.achternaam }}</option>
+            {% endfor %}
+            </select><br>
+            <input type="checkbox" id="status" name="status"/>
+            <label for="status">Bezoek Voltooid</label><br>
+            <input type="hidden" name="status_value" value="{% if status is defined and status == 'voltooid' %}voltooid{% else %}onvoltooid{% endif %}">
+            <input type="hidden" name="aankomsttijd" value="">
+            <input type="hidden" name="vertrektijd" value="">
+            </form>
+            <button type="button" id="save">Opslaan</button>
+            <button type="button" onclick="closePopup()">Annuleren</button>
+            
+            </div>
+
+
+            <div id='calendar'></div>
 {% endblock %}

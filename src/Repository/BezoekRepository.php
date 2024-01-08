@@ -27,27 +27,32 @@ class BezoekRepository extends ServiceEntityRepository
         return($this->findAll());        
     }
 
-    public function saveBezoek ($params){
-        if(isset($params["id"]) && $params["id"] != "") {
+    public function saveBezoek($params) {
+        // Check if an 'id' is provided
+        if (isset($params["id"])) {
             $bezoek = $this->find($params["id"]);
+    
+            if (!$bezoek) {
+                return "Error: Bezoek not found.";
+            }
         } else {
+            // No 'id' provided, create a new Bezoek
             $bezoek = new Bezoek();
         }
-        
-        $bezoek->setKlant($params["klant"]);
-        $bezoek->setMedewerker($params["medewerker"]);
-        $bezoek->setStatus($params["status"]);
-        $bezoek->setDatum($params["datum"]);
-        $bezoek->setTijd($params["tijd"]);
-        $bezoek->setAankomsttijd($params["aankomsttijd"]);
-        $bezoek->setVertrektijd($params["vertrektijd"]);
-
+    
+        // Update only if the key is present in the params array
+        $keysToUpdate = ["klant", "medewerker", "status", "datum", "tijd", "aankomsttijd", "vertrektijd"];
+        foreach ($keysToUpdate as $key) {
+            if (isset($params[$key])) {
+                $setter = 'set' . ucfirst($key);
+                $bezoek->$setter($params[$key]);
+            }
+        }
+    
         $this->_em->persist($bezoek);
         $this->_em->flush();
-
-        return($bezoek);
-        
     
+        return $bezoek;
     }
     public function fetchBezoek($id) {
         return($this->find($id));  

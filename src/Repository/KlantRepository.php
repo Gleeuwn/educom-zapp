@@ -24,6 +24,9 @@ class KlantRepository extends ServiceEntityRepository
     public function fetchKlant($id) {
         return($this->find($id));  
     }
+    public function getAllKlant() {
+        return($this->findAll());        
+    }
 
 //    /**
 //     * @return Klant[] Returns an array of Klant objects
