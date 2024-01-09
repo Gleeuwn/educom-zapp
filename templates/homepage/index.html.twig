@@ -38,7 +38,7 @@
 {% endblock %}
 {% block body %}
 
-<button type="submit" class="button blue" id="btn1">Nieuw Bezoek</button>
+<button type="submit" class="button blue normaal" id="btn1">Nieuw Bezoek</button>
 
             <div class="popup">
             <form id="bezoekForm">
@@ -60,9 +60,12 @@
             <option value="{{ medewerker.id }}">{{ medewerker.voornaam }} {{ medewerker.achternaam }}</option>
             {% endfor %}
             </select><br>
-            <input type="checkbox" id="status" name="status"/>
-            <label for="status">Bezoek Voltooid</label><br>
-            <input type="hidden" name="status_value" value="{% if status is defined and status == 'voltooid' %}voltooid{% else %}onvoltooid{% endif %}">
+            <label for="statusSelect">Status:</label>
+            <select id="statusSelect" name="status">
+            <option value="Onvoltooid">Onvoltooid</option>
+            <option value="Voltooid">Voltooid</option>
+            
+            
             <input type="hidden" name="aankomsttijd" value="">
             <input type="hidden" name="vertrektijd" value="">
             </form>

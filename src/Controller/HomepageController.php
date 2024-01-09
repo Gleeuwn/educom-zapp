@@ -31,16 +31,34 @@ class HomepageController extends AbstractController
         ]);
         dd($bezoeks);
     }
+    #[Route('/medewerkers', name:'app_medewerker')]
+    public function medewerker(): Response
+    {
+        $medewerkers = $this->bs->getAllMedewerker();
+        return $this->render('detailpagina/medewerkers.html.twig', [
+            'medewerkers' => $medewerkers
+        ]);
+    }
+    #[Route('/klanten', name:'app_klanten')]
+    public function klant(): Response
+    {
+        $klants = $this->bs->getAllklant();
+        return $this->render('detailpagina/klanten.html.twig', [
+            'klants' => $klants
+        ]);
+    }
 
     public function show($id): Response
     {
         $bezoeks = $this->bs->fetchBezoek($id);
         $medewerkers = $this->bs->getAllMedewerker();
         $klants = $this->bs->getAllklant();
+        $taaks = $this->bs->getAllTaak();
         return $this->render('detailpagina/detailpagina.html.twig', [
             'bezoek' => $bezoeks,
             'medewerkers' => $medewerkers,
-            'klants' => $klants
+            'klants' => $klants,
+            'taaks' => $taaks
         ]);
         dd($bezoeks);
     }
@@ -51,6 +69,18 @@ class HomepageController extends AbstractController
         $params = $request->request->all();
         file_put_contents('output.txt', print_r($params, true));
         $result = $this->bs->saveBezoek($params);
+
+        $referer = $request->headers->get('referer');
+
+        return $this->redirect($referer);
+
+    }
+    #[Route('/saveklant', name: 'klant_save', methods: ['POST'])] 
+    public function saveKlant(Request $request) {
+
+        $params = $request->request->all();
+        file_put_contents('output.txt', print_r($params, true));
+        $result = $this->bs->saveKlant($params);
 
         $referer = $request->headers->get('referer');
 

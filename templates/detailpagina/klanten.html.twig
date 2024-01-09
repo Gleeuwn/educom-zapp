@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Klanten{% endblock %}
+
+{% block body %}
+<section class="content">
+<h2> Beheer Klanten </h2>
+{% for klant in klants %}
+<div class="row border">
+<h4>{{klant.voornaam}} {{klant.achternaam}}</h4>
+{{klant.straat}} {{klant.huisnummer}} <br>
+{{klant.postcode}} {{klant.woonplaats}} <br>
+{{klant.telefoonnummer}}
+</div>
+{% endfor %}
+<div id="klantPopup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closeKlantPopup()">&times;</span>
+        <!-- Voeg hier de formulierelementen toe om klantgegevens te bewerken -->
+        <form id="editKlantForm">
+            <!-- Voeg hier inputvelden toe voor klantgegevens -->
+            <label for="klantNaam">Naam:</label>
+            <input type="text" id="klantNaam" name="klantNaam">
+            <!-- Voeg andere velden toe zoals adres, telefoon, etc. -->
+            <button type="button" onclick="saveEditedKlant()">Opslaan</button>
+        </form>
+    </div>
+</div>
+
+
+
+<button type="submit" class="button blue" id="btn1">Klant Toevoegen</button>
+<div class="popup">
+            <form id="klanttoevoegform">
+            <label>
+            Voornaam <input type="text" name="voornaam">
+            </label><br>
+            <label>
+            Achternaam <input type="text" name="achternaam">
+            </label><br>
+            <label>
+            Straat <input type="text" name="straat">
+            </label><br>
+            <label>
+            Huisnummer <input type="integer" name="huisnummer">
+            </label><br>
+            <label>
+            Postcode <input type="text" name="postcode">
+            </label><br>
+            <label>
+            Woonplaats <input type="text" name="woonplaats">
+            </label><br>
+            <label>
+            Telefoonnummer <input type="integer" name="telefoonnummer">
+            </label><br>
+            </form>
+            <button type="button" id="saveklant">Opslaan</button>
+            <button type="button" onclick="closePopup()">Annuleren</button>
+            
+            </div>
+</section>
+{% endblock %}

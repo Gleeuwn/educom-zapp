@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medewerkers{% endblock %}
+
+{% block body %}
+<section class="content">
+{% for medewerker in medewerkers %}
+<div class="row border">
+{{medewerker.id}} <h4>{{medewerker.voornaam}} {{medewerker.achternaam}}</h4><br>
+{{medewerker.functie}}<br>
+{{medewerker.email}}
+</div>
+{% endfor %}
+<button class="button blue normaal">Medewerker Toevoegen</button>
+</section>
+{% endblock %}

@@ -1,4 +1,10 @@
 Array
 (
-    [klant_id] => 2
+    [voornaam] => Art
+    [achternaam] => Rose
+    [straat] => Sportlaan
+    [huisnummer] => 1
+    [postcode] => 1111AR
+    [woonplaats] => Rotterdam
+    [telefoonnummer] => 0610101010
 )

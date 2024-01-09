@@ -24,6 +24,9 @@ class TaakRepository extends ServiceEntityRepository
     public function fetchTaak($id) {
         return($this->find($id));  
         }
+    public function getAllTaak() {
+        return($this->findAll());        
+        }
 
 //    /**
 //     * @return Taak[] Returns an array of Taak objects
