@@ -6,5 +6,5 @@ detailpagina:
     controller: App\Controller\PageController::show
 api_save:
     path: '/save'
-    controller: 'App\Controller\apiController::saveBezoek'
+    controller: 'App\Controller\ApiController::saveBezoek'
     methods: ['POST']

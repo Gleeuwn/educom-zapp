@@ -31,6 +31,20 @@ $(document).ready(function () {
         $(".popup1").fadeToggle();
         $(".popup").fadeOut(); 
     });
+    $("#deleteBezoekBtn").click(function () {
+        
+    var bezoekId = this.getAttribute('data-bezoek-id');
+    $.ajax({
+        type: "DELETE",
+        url: "/deletebezoek",
+        data: { id: bezoekId },
+        success: function (response) {
+            console.log(response);
+            window.location.href = '/homepage';
+        }
+    });
+
+    });
 
 function saveFormData(formSelector, url) {
     var formData = $(formSelector).serialize();
@@ -46,6 +60,7 @@ function saveFormData(formSelector, url) {
         }
     });
 }
+
 
 $(document).on("click", "#save", function () {
     saveFormData("#bezoekForm, #klantForm, #medewerkerForm", "/save");
@@ -64,6 +79,9 @@ $(document).on("click", "#saveklant", function () {
         $(".popup, .popup1").fadeOut();
     }
 });
+</script>
+<script>
+
 </script>
       {% block javascripts %}
         {% endblock %}

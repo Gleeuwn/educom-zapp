@@ -14,7 +14,7 @@ use App\Service\MedewerkerService;
 use App\Service\TaakService;
 
 
-class HomepageController extends AbstractController
+class PageController extends AbstractController
 {
     private $bs;
     private $ks;

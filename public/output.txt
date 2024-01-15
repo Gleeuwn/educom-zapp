@@ -1,6 +1,10 @@
 Array
 (
+    [datum] => 2024-01-15
+    [tijd] => 09:38
     [klant_id] => 3
     [medewerker_id] => 1
-    [id] => 14
+    [status] => Voltooid
+    [aankomsttijd] => 
+    [vertrektijd] => 
 )

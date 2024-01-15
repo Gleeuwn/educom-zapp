@@ -60,6 +60,9 @@ class BezoekService {
     public function getAllBezoek() {
         return($this->bezoekRepository->getAllBezoek());
     }
+    public function deleteBezoek($id){
+        return($this->bezoekRepository->deleteBezoek($id));
+    }
 
     public function saveBezoek($params) {
 

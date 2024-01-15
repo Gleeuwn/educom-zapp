@@ -51,7 +51,7 @@ class BezoekRepository extends ServiceEntityRepository
         return($this->find($id));  
         }
 
-        public function deleteBezoek($id) {
+    public function deleteBezoek($id) {
     
             $bezoek = $this->find($id);
             if($bezoek) {

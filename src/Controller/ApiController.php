@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 use App\Service\BezoekService;
 use App\Service\HandelingService;
@@ -65,11 +66,18 @@ public function savetaak(Request $request) {
 
 }
 #[Route('/savehandeling', name: 'api_handeling', methods: ['POST'])] 
-public function saveHandeling() {
+public function saveHandeling(Request $request) {
     $params = $request->request->all();
     $result = $this->hs->savehandeling($params);
     $referer = $request->headers->get('referer');
     return $this->redirect($referer);
-
+}
+#[Route('/deletebezoek', name: 'api_deletebezoek', methods: ['DELETE'])]
+public function deleteBezoek(Request $request): response{
+    $id = $request->request->get('id');
+    $result = $this->bs->deleteBezoek($id);
+    if ($result) {
+        return new Response('Bezoek deleted successfully', Response::HTTP_OK);
+}
 }
 }
