@@ -60,15 +60,6 @@ class BezoekService {
     public function getAllBezoek() {
         return($this->bezoekRepository->getAllBezoek());
     }
-    public function getAllMedewerker() {
-        return($this->medewerkerRepository->getAllMedewerker());
-    }
-    public function getAllKlant() {
-        return($this->klantRepository->getAllKlant());
-    }
-    public function getAllTaak() {
-        return($this->taakRepository->getAllTaak());
-    }
 
     public function saveBezoek($params) {
 
@@ -89,45 +80,4 @@ class BezoekService {
         return($result);
     }
 
-    public function saveKlant($params) {
-
-
-        $data = [
-          "id" => (isset($params["id"]) && $params["id"] != "") ? $params["id"] : null,
-          "voornaam" => isset($params["voornaam"]) ? $params["voornaam"] : null,
-          "achternaam" => isset($params["achternaam"]) ? $params["achternaam"] : null,
-          "straat" => isset($params["straat"]) ? $params["straat"] : null,
-          "huisnummer" => isset($params["huisnummer"]) ? $params["huisnummer"] : null,
-          "postcode" => isset($params["postcode"]) ? $params["postcode"] : null,
-          "woonplaats" => isset($params["woonplaats"]) ? $params["woonplaats"] : null,
-          "telefoonnummer" => isset($params["telefoonnummer"]) ? $params["telefoonnummer"] : null,
-        ];
-
-
-        $result = $this->klantRepository->saveKlant($data);
-        return($result);
-    }
-
-
-    public function saveHandeling($params){
-        $data = [
-            "id" => (isset($params["id"]) && $params["id"] != "") ? $params["id"] : null,
-            "bezoek" => $this->fetchBezoek($params["bezoek_id"]),
-            "taak" => $this->fetchTaak($params["taak_id"]),
-            "status" => $params["status"]
-        ];
-        $result = $this->handelingRepository->saveHandeling($data);
-        return($result);
-    }
-    public function saveTaak($params){
-        $data = [
-            "id" => (isset($params["id"]) && $params["id"] != "") ? $params["id"] : null,
-            "naam" => $params["naam"],
-            "tijd" => $params["tijd"],
-            "omschrijving" => $params["omschrijving"],
-
-        ];
-        $result = $this->taakRepository->saveTaak($data);
-        return($result);
-    }
 }

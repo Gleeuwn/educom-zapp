@@ -26,6 +26,29 @@ class MedewerkerRepository extends ServiceEntityRepository
     public function getAllMedewerker() {
         return($this->findAll());        
     }
+    public function saveMedewerker($params) {
+        if (isset($params["id"])) {
+            $klant = $this->find($params["id"]);
+    
+            if (!$klant) {
+                return "Error: Klant not found.";
+            }
+        } else {
+            $klant = new Klant();
+        }
+        $keysToUpdate = ["voornaam", "achternaam", "straat", "huisnummer", "postcode", "woonplaats", "telefoonnummer"];
+        foreach ($keysToUpdate as $key) {
+            if (isset($params[$key])) {
+                $setter = 'set' . ucfirst($key);
+                $klant->$setter($params[$key]);
+            }
+        }
+    
+        $this->_em->persist($klant);
+        $this->_em->flush();
+    
+        return $klant;
+    }
 
 //    /**
 //     * @return Medewerker[] Returns an array of Medewerker objects

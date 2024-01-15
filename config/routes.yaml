@@ -3,8 +3,8 @@ controllers:
     type: attribute
 detailpagina:
     path: /detailpagina/{id}
-    controller: App\Controller\HomepageController::show
-bezoek_save:
+    controller: App\Controller\PageController::show
+api_save:
     path: '/save'
-    controller: 'App\Controller\HomepageController::saveBezoek'
+    controller: 'App\Controller\apiController::saveBezoek'
     methods: ['POST']

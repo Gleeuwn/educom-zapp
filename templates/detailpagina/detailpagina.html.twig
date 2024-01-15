@@ -85,42 +85,62 @@
         <ul>
             {% set totaleTijd = 0 %}
             {% set count = 0 %}
-            <table id="taaktabel" class="border">
-            <thead>
-            <tr><th>#</th><th>Taak</th><th>Omschrijving</th><th>Tijd</th><th>Status</th><th></th></tr>
-            </thead>
-            <tbody>
-            {% for handeling in bezoek.handelings %}
-            {% set count = count +1 %}
-                <tr>
-                <td>{{ count }}</td>
-                <td>{{ handeling.taak.naam }}</td>
-                <td>{{ handeling.taak.omschrijving }}</td>
-                <td>{{ handeling.taak.tijd }} minuten</td>
-                <td>{{ handeling.status }}</td>
-                <td><button class="button red breed"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12zM432 80h-82.4l-34-56.7A48 48 0 0 0 274.4 0H173.6a48 48 0 0 0 -41.2 23.3L98.4 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0 -16-16zM171.8 50.9A6 6 0 0 1 177 48h94a6 6 0 0 1 5.2 2.9L293.6 80H154.4zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12z"/></svg></i></button></td>
-                </tr>
-            
+            <div class="container border">
+    {% if bezoek.handelings %}
+        <div class="row mb-3">
+            <div class="col">#</div>
+            <div class="col">Taak</div>
+            <div class="col">Omschrijving</div>
+            <div class="col">Tijd</div>
+            <div class="col">Status</div>
+            <div class="col"></div>
+        </div>
+
+        {% for handeling in bezoek.handelings %}
+            <div class="row mb-3 border">
+                <div class="col">{{ loop.index }}</div>
+                <div class="col">{{ handeling.taak.naam }}</div>
+                <div class="col">{{ handeling.taak.omschrijving }}</div>
+                <div class="col">{{ handeling.taak.tijd }} minuten</div>
+                <div class="col">{% if handeling.status == 'Voltooid' %}
+                        <input type="checkbox" name="status[]" checked>
+                    {% else %}
+                        <input type="checkbox" name="status[]">
+                    {% endif %}</div>
+                <div class="col">
+                    <button class="btn btn-danger btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12zM432 80h-82.4l-34-56.7A48 48 0 0 0 274.4 0H173.6a48 48 0 0 0 -41.2 23.3L98.4 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0 -16-16zM171.8 50.9A6 6 0 0 1 177 48h94a6 6 0 0 1 5.2 2.9L293.6 80H154.4zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12z"/></svg>
+                    </button>
+                </div>
+            </div>
             {% set totaleTijd = totaleTijd + handeling.taak.tijd %}
-            {% endfor %}
-            <tr id="tableform">
-            {% set count = count +1 %}
-            <td id="count">{{ count }}</td>
-            <td><input type="text" name="taakInput[]"></td>
-            <td><select name="existingTaak[]" onchange="fillTaakDetails(this)">
-            {% for taak in taaks %}
-            <option value="{taak.id}">{{taak.naam}}</option>
-            {% endfor %}
-            </select></td>
-            <td><input type="text" name="tijd[]"></td>
-            <td><input type="checkbox" name="status[]"</td>
-            <td><button class="button red breed"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12zM432 80h-82.4l-34-56.7A48 48 0 0 0 274.4 0H173.6a48 48 0 0 0 -41.2 23.3L98.4 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0 -16-16zM171.8 50.9A6 6 0 0 1 177 48h94a6 6 0 0 1 5.2 2.9L293.6 80H154.4zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12z"/></svg></i></button></td>
-            
-            </tr>
-            
-            </tbody>
-            </table>
-            <button class="button blue right smal" type="button" onclick="addNewTaak()"> + </button>
+        {% endfor %}
+
+        <div class="row mb-3">
+            <div class="col">{{ count + 1 }}</div>
+            <div class="col"><input type="text" name="taakInput[]"></div>
+            <div class="col">
+                <select name="existingTaak[]" onchange="fillTaakDetails(this)">
+                    {% for taak in taaks %}
+                        <option value="{{ taak.id }}">{{ taak.naam }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col"><input type="text" name="tijd[]"></div>
+            <div class="col"><input type="checkbox" name="status[]"></div>
+            <div class="col">
+                <button class="btn btn-danger btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12zM432 80h-82.4l-34-56.7A48 48 0 0 0 274.4 0H173.6a48 48 0 0 0 -41.2 23.3L98.4 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0 -16-16zM171.8 50.9A6 6 0 0 1 177 48h94a6 6 0 0 1 5.2 2.9L293.6 80H154.4zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0 -12-12h-24a12 12 0 0 0 -12 12v216a12 12 0 0 0 12 12z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <p>Totale tijd van alle handelingen: {{ totaleTijd }} minuten</p>
+    {% else %}
+        <p>Geen handelingen gevonden voor dit bezoek.</p>
+    {% endif %}
+</div>
+            <button class="button blue right smal" type="button" onclick="addNewRow()"> + </button>
         </ul>
         <p>Totale tijd van alle handelingen: {{ totaleTijd }} minuten</p>
     {% else %}
@@ -139,31 +159,43 @@
 {% endblock %}
 {% block javascripts %}
 <script>
-    function addNewTaak() {
-        var newRow = $("#tableform").clone();
-        newRow.find("#Count").text($("#taaktabel tbody tr").length + 1);
+    function addNewRow() {
+        
+        var container = document.querySelector('.container');
 
-        // Clear input values for the new row
-        newRow.find("input[type=text]").val("");
-        newRow.find("input[type=checkbox]").prop("checked", false);
+        
+        var newRow = document.createElement('div');
+        newRow.classList.add('row', 'mb-3');
 
-        $("#taaktabel tbody").append(newRow);
-    }
+        // Add columns to the new row
+        newRow.innerHTML = `
+            <div class="col">${count + 1}</div>
+            <div class="col"><input type="text" name="taakInput[]"></div>
+            <div class="col">
+                <select name="existingTaak[]" onchange="fillTaakDetails(this)">
+                    {% for taak in taaks %}
+                        <option value="{{ taak.id }}">{{ taak.naam }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col"><input type="text" name="tijd[]"></div>
+            <div class="col"><input type="checkbox" name="status[]"></div>
+            <div class="col">
+                <button class="btn btn-danger btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
+                        <!-- Your SVG path here -->
+                    </svg>
+                </button>
+            </div>
+    `;
 
-    function fillTaakDetails(dropdown) {
-        var selectedTaskId = dropdown.value;
+        // Append the new row to the container
+        container.appendChild(newRow);
 
-        var dummyTask = {
-            naam: "",
-            omschrijving: "",
-            tijd: "",
-        };
+        // Increment the count variable
+        count++;
 
-        var row = $(dropdown).closest('tr');
-
-        row.find('td:nth-child(2)').text(dummyTask.naam);
-        row.find('td:nth-child(3)').text(dummyTask.omschrijving);
-        row.find('td:nth-child(4)').text(dummyTask.tijd + ' minuten');
+        // You can add any additional logic or functionality here if needed
     }
 </script>
 {% endblock %}

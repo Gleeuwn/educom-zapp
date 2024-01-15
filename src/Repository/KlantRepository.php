@@ -29,15 +29,10 @@ class KlantRepository extends ServiceEntityRepository
     }
 
     public function saveKlant($params) {
-        if (isset($params["id"])) {
-            $klant = $this->find($params["id"]);
-    
-            if (!$klant) {
-                return "Error: Klant not found.";
-            }
-        } else {
-            $klant = new Klant();
-        }
+        $klant = isset($params["id"]) ? $this->find($params["id"]) : new Klant();
+
+        if (!$klant) return false;
+
         $keysToUpdate = ["voornaam", "achternaam", "straat", "huisnummer", "postcode", "woonplaats", "telefoonnummer"];
         foreach ($keysToUpdate as $key) {
             if (isset($params[$key])) {

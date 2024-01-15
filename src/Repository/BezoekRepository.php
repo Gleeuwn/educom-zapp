@@ -28,19 +28,12 @@ class BezoekRepository extends ServiceEntityRepository
     }
 
     public function saveBezoek($params) {
-        // Check if an 'id' is provided
-        if (isset($params["id"])) {
-            $bezoek = $this->find($params["id"]);
+            $bezoek = isset($params["id"]) ? $this->find($params["id"]) : new Bezoek();
+
+            if (!$bezoek) return false;
+            
     
-            if (!$bezoek) {
-                return "Error: Bezoek not found.";
-            }
-        } else {
-            // No 'id' provided, create a new Bezoek
-            $bezoek = new Bezoek();
-        }
-    
-        // Update only if the key is present in the params array
+        // Voeg metadata toe
         $keysToUpdate = ["klant", "medewerker", "status", "datum", "tijd", "aankomsttijd", "vertrektijd"];
         foreach ($keysToUpdate as $key) {
             if (isset($params[$key])) {
